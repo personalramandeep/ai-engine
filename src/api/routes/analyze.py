@@ -11,13 +11,13 @@ router = APIRouter()
 logger = get_logger("api.routes.analyze")
 
 
-def _run_pipeline(post_id: str, video_id: str, user_id: str, local_path: str, file_path: str, record_angle: str):
+def _run_pipeline(post_id: str, video_id: str, user_id: str, local_path: str, file_path: str, record_angle: str, webhook_base_url: str = None):
     try:
         result = process_video(local_path, file_path, record_angle, user_id, video_id)
-        notify_success(post_id, result)
+        notify_success(post_id, result, webhook_base_url)
     except BaseException as e:
         logger.error(f"Pipeline failed post={post_id} video={video_id}: {e}")
-        notify_failure(post_id, str(e))
+        notify_failure(post_id, str(e), webhook_base_url)
 
 
 @router.post(
@@ -47,7 +47,7 @@ def analyze_video(request: AnalyzeRequest):
 
     threading.Thread(
         target=_run_pipeline,
-        args=(request.postId, request.videoId, request.userId, local_path, request.filePath, request.recordAngle.value),
+        args=(request.postId, request.videoId, request.userId, local_path, request.filePath, request.recordAngle.value, request.webhookBaseUrl),
         daemon=False,
     ).start()
 

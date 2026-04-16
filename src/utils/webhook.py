@@ -21,8 +21,8 @@ def _signed_post(url: str, payload: dict) -> requests.Response:
     }, timeout=30)
 
 
-def notify_success(post_id: str, result: dict):
-    url = f"{settings.WEBHOOK_BASE_URL}/internal/posts/{post_id}/analysis-result"
+def notify_success(post_id: str, result: dict, webhook_base_url: str = None):
+    url = f"{webhook_base_url or settings.WEBHOOK_BASE_URL}/internal/posts/{post_id}/analysis-result"
     payload = {
         "record_angle":        result["record_angle"],
         "total_frames":        result["total_frames"],
@@ -50,8 +50,8 @@ def notify_success(post_id: str, result: dict):
         logger.error(f"Webhook success failed post={post_id}: {e}")
 
 
-def notify_failure(post_id: str, error: str):
-    url = f"{settings.WEBHOOK_BASE_URL}/internal/posts/{post_id}/analysis-failure"
+def notify_failure(post_id: str, error: str, webhook_base_url: str = None):
+    url = f"{webhook_base_url or settings.WEBHOOK_BASE_URL}/internal/posts/{post_id}/analysis-failure"
     payload = {"message": "Analysis failed", "error": error}
     try:
         logger.info(f"Webhook POST failure → {url} | payload={json.dumps(payload)}")

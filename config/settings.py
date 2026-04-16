@@ -28,7 +28,7 @@ class Settings(BaseSettings):
 
     VIDEO_FPS: int = 30
 
-    WEBHOOK_BASE_URL: str = "https://backend-service-87645406452.asia-south1.run.app"
+    WEBHOOK_BASE_URL: str = ""
     HMAC_SECRET: str = "995b37b2ccc9e293eca0b0ff3e070b6d4fd9cbd6335f4b81cda03cc2c02bd5c6"
 
     class Config:
