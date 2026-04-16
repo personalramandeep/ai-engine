@@ -9,10 +9,19 @@ from src.utils.logger import get_logger
 logger = get_logger("webhook")
 
 
+def _is_hex(s: str) -> bool:
+    try:
+        bytes.fromhex(s)
+        return True
+    except ValueError:
+        return False
+
+
 def _signed_post(url: str, payload: dict) -> requests.Response:
     body = json.dumps(payload, separators=(",", ":")).encode()
     ts = str(int(time.time()))
-    sig = hmac.new(settings.HMAC_SECRET.encode(), body, hashlib.sha256).hexdigest()
+    secret = bytes.fromhex(settings.HMAC_SECRET) if _is_hex(settings.HMAC_SECRET) else settings.HMAC_SECRET.encode()
+    sig = hmac.new(secret, body, hashlib.sha256).hexdigest()
 
     return requests.post(url, data=body, headers={
         "Content-Type": "application/json",
