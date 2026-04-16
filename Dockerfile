@@ -33,7 +33,7 @@ RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 \
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir google-cloud-storage
+    pip install --no-cache-dir boto3
 
 # Copy application code
 COPY . .

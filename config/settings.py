@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     API_PREFIX: str = "/api/v1"
 
     ENV: str = "local"  # local | prod
-    GCS_BUCKET: str = ""
+    S3_BUCKET: str = ""
 
     DATA_DIR: Path = BASE_DIR / "data"
     RAW_DATA_DIR: Path = DATA_DIR / "raw"
