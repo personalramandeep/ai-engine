@@ -22,10 +22,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 
 # Install protobuf FIRST and lock it
-RUN pip install --no-cache-dir protobuf==3.20.3
+RUN pip install --no-cache-dir protobuf==4.25.3
 
 # Install mediapipe next (so it binds to correct protobuf)
-RUN pip install --no-cache-dir mediapipe==0.10.14
+RUN pip install --no-cache-dir mediapipe==0.10.18
 
 RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 \
     --index-url https://download.pytorch.org/whl/cpu
@@ -40,8 +40,6 @@ COPY . .
 
 # Create required directories
 RUN mkdir -p logs static models/weights
-RUN python -c "import google.protobuf; print(google.protobuf.__version__)"
-ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 # Disable reload in production
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
