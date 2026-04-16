@@ -24,3 +24,7 @@ async def log_requests(request: Request, call_next):
     return response
 
 app.include_router(analyze_router, prefix="/api/v1", tags=["Analysis"])
+
+@app.get("/health", tags=["Health"])
+def health():
+    return {"status": "ok"}
